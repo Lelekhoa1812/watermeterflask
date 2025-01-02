@@ -6,11 +6,11 @@ numpy
 vietocr @ git+https://github.com/pbcquoc/vietocr.git
 torch
 torchvision
-ultralytics
+# ultralytics
 gunicorn
-google-cloud-vision
+# google-cloud-vision
 google-auth
-google-auth-oauthlib
-google-auth-httplib2
-google-api-python-client
+# google-auth-oauthlib
+# google-auth-httplib2
+# google-api-python-client
 opencv-python-headless
