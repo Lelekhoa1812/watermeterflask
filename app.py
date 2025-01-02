@@ -11,9 +11,11 @@ from io import BytesIO
 import os
 import numpy as np
 import traceback
-from vietocr.tool.predictor import Predictor
-from vietocr.tool.config import Cfg
+# For local deployment
+# from vietocr.tool.predictor import Predictor
+# from vietocr.tool.config import Cfg
 import cv2
+# For remote deployment
 from google.cloud import vision
 
 # Flask application setup
@@ -29,8 +31,19 @@ HUB_API_KEY = "11d01d0022bc555c5206abe2ee3587b5ad5e85b66e" # Contact for API key
 HUB_MODEL_URL = "https://hub.ultralytics.com/models/P7NNTwolndJ4wZR9bhQW" # YOLOv11l model
 
 # Google Cloud Vision configuration
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join("key", "water-meter-446604-caaf29a7c598.json")
-vision_client = vision.ImageAnnotatorClient()
+# Load Google Cloud credentials from environment variable
+TEXT_API_KEY_JSON = os.getenv("GCLOUD_SERVICE_ACCOUNT_KEY")
+# If not found JSON
+if not TEXT_API_KEY_JSON:
+    raise ValueError("Google Cloud service account key not found in environment variables")
+# Write the key to a temporary file
+temp_key_path = "/tmp/service_account_key.json"
+with open(temp_key_path, "w") as key_file:
+    key_file.write(TEXT_API_KEY_JSON)
+# Set the environment variable for Google Cloud API authentication
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = temp_key_path
+# Initialize Google Vision API client
+client = vision.ImageAnnotatorClient()
 
 # # VietOCR model setup
 # vietocr_config = Cfg.load_config_from_name('vgg_transformer')
@@ -235,7 +248,7 @@ def recognize_text(cropped_img):
         img_byte_array = img_byte_array.getvalue()
         # Use Google Cloud Vision API
         image = vision.Image(content=img_byte_array)
-        response = vision_client.text_detection(image=image)
+        response = client.text_detection(image=image)
         # Validate GV API
         if response.error.message:
             app.logger.error(f"Google Vision API error: {response.error.message}")
