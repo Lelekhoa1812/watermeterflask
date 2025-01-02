@@ -4,13 +4,13 @@ requests
 pillow
 numpy
 vietocr @ git+https://github.com/pbcquoc/vietocr.git
-torch
-torchvision
+# torch
+# torchvision
 # ultralytics
 gunicorn
 # google-cloud-vision
 google-auth
-# google-auth-oauthlib
+google-auth-oauthlib
 # google-auth-httplib2
 # google-api-python-client
 opencv-python-headless
