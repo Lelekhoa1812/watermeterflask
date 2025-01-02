@@ -4,7 +4,7 @@ requests
 pillow
 numpy
 vietocr @ git+https://github.com/pbcquoc/vietocr.git
-# torch
+torch
 # torchvision
 # ultralytics
 gunicorn
