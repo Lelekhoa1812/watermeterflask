@@ -8,4 +8,4 @@ torch
 torchvision
 ultralytics
 gunicorn
-
+google-cloud-vision
