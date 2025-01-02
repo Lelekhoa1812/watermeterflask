@@ -5,7 +5,7 @@ pillow
 numpy
 vietocr @ git+https://github.com/pbcquoc/vietocr.git
 torch
-# torchvision
+torchvision
 # ultralytics
 gunicorn
 # google-cloud-vision
