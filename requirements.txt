@@ -8,7 +8,7 @@ torch
 torchvision
 # ultralytics
 gunicorn
-google-cloud-vision
+# google-cloud-vision
 google-auth
 # google-auth-oauthlib
 # google-auth-httplib2

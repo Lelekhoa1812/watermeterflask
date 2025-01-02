@@ -18,7 +18,7 @@ from vietocr.tool.predictor import Predictor
 from vietocr.tool.config import Cfg
 
 # For remote deployment
-from google.cloud import vision
+# from google.cloud import vision
 from google.auth.transport.requests import AuthorizedSession
 from google.oauth2.service_account import Credentials
 
