@@ -14,7 +14,7 @@ import traceback
 from vietocr.tool.predictor import Predictor
 from vietocr.tool.config import Cfg
 import cv2
-
+from google.cloud import vision
 
 # Flask application setup
 app = Flask(__name__)
@@ -28,12 +28,16 @@ HUB_API_KEY = "11d01d0022bc555c5206abe2ee3587b5ad5e85b66e" # Contact for API key
 # Use this model for better accuracy
 HUB_MODEL_URL = "https://hub.ultralytics.com/models/P7NNTwolndJ4wZR9bhQW" # YOLOv11l model
 
-# VietOCR model setup
-vietocr_config = Cfg.load_config_from_name('vgg_transformer')
-vietocr_config['weights'] = './models/vgg_transformer.pth'
-vietocr_config['device'] = 'cpu'  # Use 'cuda' for GPU if available
-vietocr_config['predictor']['beamsearch'] = False
-vietocr = Predictor(vietocr_config)
+# Google Cloud Vision configuration
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join("key", "water-meter-446604-caaf29a7c598.json")
+vision_client = vision.ImageAnnotatorClient()
+
+# # VietOCR model setup
+# vietocr_config = Cfg.load_config_from_name('vgg_transformer')
+# vietocr_config['weights'] = './models/vgg_transformer.pth'
+# vietocr_config['device'] = 'cpu'  # Use 'cuda' for GPU if available
+# vietocr_config['predictor']['beamsearch'] = False
+# vietocr = Predictor(vietocr_config)
 
 
 # Apply preprocess steps to improve prediction under edge case constraints
@@ -216,12 +220,29 @@ def recognize_text(cropped_img):
     print(f"Text recognition in progress...")
 
     try:
-        # Ensure input is a PIL.Image object
-        if not isinstance(cropped_img, Image.Image):  # Check if not a PIL.Image
-            cropped_img = Image.fromarray(np.array(cropped_img))  # Convert back to PIL.Image if necessary
+        ##### Local deployment
+        # # Ensure input is a PIL.Image object
+        # if not isinstance(cropped_img, Image.Image):  # Check if not a PIL.Image
+        #     cropped_img = Image.fromarray(np.array(cropped_img))  # Convert back to PIL.Image if necessary
+        # # Run OCR using VietOCR
+        # raw_text = vietocr.predict(cropped_img)
+        #### 
 
-        # Run OCR using VietOCR
-        raw_text = vietocr.predict(cropped_img)
+        #### Render Cloud deployment 
+        # Convert PIL.Image to byte array
+        img_byte_array = BytesIO()
+        cropped_img.save(img_byte_array, format="JPEG")
+        img_byte_array = img_byte_array.getvalue()
+        # Use Google Cloud Vision API
+        image = vision.Image(content=img_byte_array)
+        response = vision_client.text_detection(image=image)
+        # Validate GV API
+        if response.error.message:
+            app.logger.error(f"Google Vision API error: {response.error.message}")
+            return "ERROR"
+        # Extract
+        raw_text = response.text_annotations[0].description.strip() if response.text_annotations else ""
+        ####
 
         # Convert characters based on the mapping
         converted_text = ""
