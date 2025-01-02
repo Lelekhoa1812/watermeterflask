@@ -3,4 +3,4 @@ models/
 # Ignore key
 key/
 # Ignore test script
-#test.py
+test.py
