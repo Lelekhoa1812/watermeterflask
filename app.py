@@ -1,6 +1,8 @@
 # CURL command for direct post query on either local path or remote URL
 # curl -X POST -H "Content-Type: application/json" -d '{"imageUrl":"/Users/khoale/Downloads/water-meter-ocr/flask-server/static/testimg1.jpg"}' http://localhost:5001/ocr
 # curl -X POST -H "Content-Type: application/json" -d '{"imageUrl":"http://115.79.125.119:8081/donghonuoc/uploads/19112024101437.jpg"}' http://localhost:5001/ocr
+# For Render deployment:
+# curl -X POST -H "Content-Type: application/json" -d '{"imageUrl":"http://115.79.125.119:8081/donghonuoc/uploads/19112024101437.jpg"}' https://watermeterflask.onrender.com/ocr
 
 import json
 import requests
@@ -11,10 +13,12 @@ from io import BytesIO
 import os
 import numpy as np
 import traceback
+
 # For local deployment
 # from vietocr.tool.predictor import Predictor
 # from vietocr.tool.config import Cfg
 import cv2
+
 # For remote deployment
 from google.cloud import vision
 
