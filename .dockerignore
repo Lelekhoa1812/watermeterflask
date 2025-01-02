@@ -1,0 +1,7 @@
+__pycache__/
+*.log
+*.tmp
+*.pt
+*.pth
+dataset/
+.git/
