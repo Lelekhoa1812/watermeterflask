@@ -3,7 +3,7 @@ flask-cors
 requests
 pillow
 numpy
-vietocr @ git+https://github.com/pbcquoc/vietocr.git
+# vietocr @ git+https://github.com/pbcquoc/vietocr.git
 torch
 torchvision
 ultralytics
