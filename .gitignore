@@ -1,5 +1,6 @@
+# Ignore weight/model
 models/
-
-vietocr/
-
+# Ignore key
 key/
+# Ignore test script
+#test.py
