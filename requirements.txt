@@ -9,3 +9,4 @@ torchvision
 ultralytics
 gunicorn
 google-cloud-vision
+opencv-python-headless
