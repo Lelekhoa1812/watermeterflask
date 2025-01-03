@@ -27,4 +27,4 @@ COPY . /app/
 EXPOSE 5000
 
 # Specify the command to run the Flask app
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
