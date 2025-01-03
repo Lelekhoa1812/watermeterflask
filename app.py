@@ -309,6 +309,7 @@ def recognize_text(cropped_img):
     
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5001))  # Default to 5001 if no PORT is provided
+    # port = int(os.environ.get("PORT", 5001))  # Default to 5001 if no PORT is provided
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 for Flask app
     app.run(host='0.0.0.0', port=port)
     print("--END-SESSION--") # Terminate all session
