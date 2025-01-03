@@ -19,8 +19,8 @@ from vietocr.tool.config import Cfg
 
 # For remote deployment
 # from google.cloud import vision
-from google.auth.transport.requests import AuthorizedSession
-from google.oauth2.service_account import Credentials
+# from google.auth.transport.requests import AuthorizedSession
+# from google.oauth2.service_account import Credentials
 
 # Flask application setup
 app = Flask(__name__)
@@ -173,8 +173,8 @@ def ocr_process():
         img = preprocess_image(img) # Remove to reduce runtime but also reduce prediction coverages
 
         # Convert input img to RGB if necessary
-        if img.mode != "RGB":
-            img = img.convert("RGB")
+        # if img.mode != "RGB":
+        #     img = img.convert("RGB")
 
         # Save the image temporarily for inference request
         temp_image_path = "static/temp_image.jpg"
