@@ -53,40 +53,41 @@ with open(SERVICE_ACCOUNT_KEY_PATH, "w") as key_file:
 # Set the environment variable for Google Cloud API authentication
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = SERVICE_ACCOUNT_KEY_PATH
 # Direct usage when deploying locally with key file (must be commented)
-# SERVICE_ACCOUNT_KEY_PATH = "key/water-meter-446604-9eb9b40f5f9d.json"  # Path to your service account JSON key
+SERVICE_ACCOUNT_KEY_PATH = "key/water-meter-446604-9eb9b40f5f9d.json"  # Path to your service account JSON key
+
 # Download model from Google Cloud Service
-def download_model_from_gcs_authenticated(url, local_path, service_account_key_path):
-    """
-    Downloads a file from GCS with authentication.
+# def download_model_from_gcs_authenticated(url, local_path, service_account_key_path):
+#     """
+#     Downloads a file from GCS with authentication.
 
-    Args:
-        url (str): GCS URL to the file.
-        local_path (str): Local path to save the downloaded file.
-        service_account_key_path (str): Path to the service account JSON key file.
+#     Args:
+#         url (str): GCS URL to the file.
+#         local_path (str): Local path to save the downloaded file.
+#         service_account_key_path (str): Path to the service account JSON key file.
 
-    Raises:
-        Exception: If an error occurs during the download process.
-    """
-    try:
-        print(f"Authenticating with GCS and downloading model from {url}...")
-        os.makedirs(os.path.dirname(local_path), exist_ok=True)
-        # Authenticate using the service account key with appropriate scopes
-        SCOPES = ["https://www.googleapis.com/auth/devstorage.read_only"]
-        credentials = Credentials.from_service_account_file(service_account_key_path, scopes=SCOPES)
-        authed_session = AuthorizedSession(credentials)
-        # Perform the authenticated request
-        response = authed_session.get(url, stream=True)
-        # Check status when download and write the file
-        if response.status_code == 200:
-            with open(local_path, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-            print(f"Model downloaded successfully to {local_path}.")
-        else:
-            raise Exception(f"Failed to download model: {response.status_code}, {response.reason}")
-    except Exception as e:
-        app.logger.error(f"Error downloading model from GCS: {e}")
-        raise
+#     Raises:
+#         Exception: If an error occurs during the download process.
+#     """
+#     try:
+#         print(f"Authenticating with GCS and downloading model from {url}...")
+#         os.makedirs(os.path.dirname(local_path), exist_ok=True)
+#         # Authenticate using the service account key with appropriate scopes
+#         SCOPES = ["https://www.googleapis.com/auth/devstorage.read_only"]
+#         credentials = Credentials.from_service_account_file(service_account_key_path, scopes=SCOPES)
+#         authed_session = AuthorizedSession(credentials)
+#         # Perform the authenticated request
+#         response = authed_session.get(url, stream=True)
+#         # Check status when download and write the file
+#         if response.status_code == 200:
+#             with open(local_path, 'wb') as f:
+#                 for chunk in response.iter_content(chunk_size=8192):
+#                     f.write(chunk)
+#             print(f"Model downloaded successfully to {local_path}.")
+#         else:
+#             raise Exception(f"Failed to download model: {response.status_code}, {response.reason}")
+#     except Exception as e:
+#         app.logger.error(f"Error downloading model from GCS: {e}")
+#         raise
 # Validate model file integrity
 def validate_model_file(file_path):
     if not os.path.exists(file_path) or os.path.getsize(file_path) == 0:
@@ -99,8 +100,8 @@ def setup_vietocr_model(model_path):
     config['predictor']['beamsearch'] = False
     return Predictor(config)
 # Ensure the model is available locally
-if not os.path.exists(MODEL_PATH):
-    download_model_from_gcs_authenticated(MODEL_URL, MODEL_PATH, SERVICE_ACCOUNT_KEY_PATH)
+# if not os.path.exists(MODEL_PATH):
+#     download_model_from_gcs_authenticated(MODEL_URL, MODEL_PATH, SERVICE_ACCOUNT_KEY_PATH)
 validate_model_file(MODEL_PATH)
 # Call setup
 vietocr = setup_vietocr_model(MODEL_PATH)
